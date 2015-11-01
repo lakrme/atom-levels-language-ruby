@@ -9,7 +9,7 @@
     "lps",
     "ruby"
   ],
-  "repository": "https://github.com/lakrme/atom-levels-language-template",
+  "repository": "https://github.com/lakrme/atom-levels-language-ruby",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
   },
