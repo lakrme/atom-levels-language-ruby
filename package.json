@@ -1,0 +1,26 @@
+{
+  "name": "levels-language-ruby",
+  "main": "./lib/main",
+  "version": "0.0.0",
+  "description": "Ruby with language levels for the lecture \"Informatik für Nebenfächler\" (University of Kiel, Department of Computer Science, WS 2015/2016). This package is a plug-in for the Levels package.",
+  "keywords": [
+    "language",
+    "levels",
+    "lps",
+    "ruby"
+  ],
+  "repository": "https://github.com/lakrme/atom-levels-language-template",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "consumedServices": {
+    "levels": {
+      "versions": {
+        "^0.3.0": "consumeLevels"
+      }
+    }
+  },
+  "dependencies": {
+    "season": "^5.2.0"
+  }
+}
