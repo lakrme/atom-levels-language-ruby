@@ -3,30 +3,30 @@
   "levels": [
     {
       "name": "Level 1",
-      "description":
-        "Statements must be terminated with a semicolon to explicitly
-        distinguish them from expressions."
+      "description": "Statements must be terminated with a semicolon to explicitly distinguish them from expressions."
     },
     {
       "name": "Level 2",
-      "description":
-        "Semicolons are now optional. Statements (procedures) are no longer
-        distinguished from expressions (functions)."
+      "description": "Semicolons are now optional. Statements (procedures) are no longer distinguished from expressions (functions)."
     },
     {
       "name": "Level 3",
-      "description" :
-        "Introduces blocks as a new language construct."
+      "description": "Introduces blocks as a new language construct."
     },
     {
       "name": "Level 4",
-      "description":
-        "Ruby without any restrictions!"
+      "description": "Ruby without any restrictions!"
     }
   ],
   "defaultGrammar": "grammars/default.cson",
-  "levelCodeFileTypes": ["rb","rbl","lrb"],
+  "levelCodeFileTypes": [
+    "rb",
+    "rbl",
+    "lrb"
+  ],
   "objectCodeFileType": "rb",
   "lineCommentPattern": "# <comment>",
-  "executionCommandPatterns": ["ruby <filePath>"]
+  "executionCommandPatterns": [
+    "ruby <filePath>"
+  ]
 }

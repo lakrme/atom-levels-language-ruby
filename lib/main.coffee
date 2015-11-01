@@ -105,13 +105,16 @@ module.exports =
 
   startUsingLevels: ->
     unless @language?
-      @language = @languageRegistry.readLanguageSync\
+      try
+        @language = @languageRegistry.readLanguageSync\
         (@configFilePath,@executablePath)
-      @dummyGrammar.name = @language.getGrammarName()
-      @dummyGrammar.scopeName = @language.getScopeName()
-      @dummyGrammar.fileTypes = @language.getLevelCodeFileTypes()
-      @language.setDummyGrammar(@dummyGrammar)
-      @setUpLanguageConfigurationManagement()
+        @dummyGrammar.name = @language.getGrammarName()
+        @dummyGrammar.scopeName = @language.getScopeName()
+        @dummyGrammar.fileTypes = @language.getLevelCodeFileTypes()
+        @language.setDummyGrammar(@dummyGrammar)
+        @setUpLanguageConfigurationManagement()
+      catch error
+        console.log error
     atom.grammars.addGrammar(@dummyGrammar)
     @languageRegistry.addLanguage(@language)
 
@@ -140,7 +143,7 @@ module.exports =
     #   @language.setObjectCodeFileType(newValue)
 
     configKeyPath = "#{pkgName}.executionSettings.executionCommandPatterns"
-    if (executionCommandPatterns = atom.config.get(configKeyPath))
+    if (executionCommandPatterns = atom.config.get(configKeyPath)).length > 0
       @language.setExecutionCommandPatterns(executionCommandPatterns)
     else
       atom.config.set(configKeyPath,@language.getExecutionCommandPatterns())

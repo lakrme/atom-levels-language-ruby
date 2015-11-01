@@ -2,7 +2,7 @@
   "name": "levels-language-ruby",
   "main": "./lib/main",
   "version": "0.0.0",
-  "description": "Ruby with language levels for the lecture \"Informatik für Nebenfächler\" (University of Kiel, Department of Computer Science, WS 2015/2016). This package is a plug-in for the Levels package.",
+  "description": "Ruby with language levels for the lecture \"Informatik für Nebenfächler\" (University of Kiel, Department of Computer Science, WS 2015/2016).",
   "keywords": [
     "language",
     "levels",
