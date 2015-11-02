@@ -107,7 +107,7 @@ module.exports =
     unless @language?
       try
         @language = @languageRegistry.readLanguageSync\
-        (@configFilePath,@executablePath)
+          (@configFilePath,@executablePath)
         @dummyGrammar.name = @language.getGrammarName()
         @dummyGrammar.scopeName = @language.getScopeName()
         @dummyGrammar.fileTypes = @language.getLevelCodeFileTypes()
@@ -115,11 +115,14 @@ module.exports =
         @setUpLanguageConfigurationManagement()
       catch error
         console.log error
+    whitelistPath = path.join(@pkgDirPath,'language','whitelist')
+    process.env['LRB_WHITELIST_PATH'] = whitelistPath
     atom.grammars.addGrammar(@dummyGrammar)
     @languageRegistry.addLanguage(@language)
 
   stopUsingLevels: ->
     atom.grammars.removeGrammar(@dummyGrammar)
+    delete process.env['LRB_WHITELIST_PATH']
 
   ## Language configuration management -----------------------------------------
 

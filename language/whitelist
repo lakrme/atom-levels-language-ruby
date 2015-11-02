@@ -1,0 +1,3 @@
+require Proc
+to_f Func
+warn Proc
