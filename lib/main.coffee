@@ -30,14 +30,6 @@ module.exports =
       type: 'object'
       order: 2
       properties:
-        # objectCodeFileType:
-        #   title: 'Object Code File Type'
-        #   description:
-        #     'The default file type extension of the back-end programming
-        #     language for this level language (e.g. `hs` for a Haskell-based
-        #     level language). The object code file type is needed for '
-        #   type: 'string'
-        #   default: ''
         executionCommandPatterns:
           title: 'Execution Command Pattern(s)'
           description:
@@ -136,14 +128,6 @@ module.exports =
       atom.config.set(configKeyPath,@language.getLevelCodeFileTypes())
     atom.config.onDidChange configKeyPath, ({newValue}) =>
       @language.setLevelCodeFileTypes(newValue)
-
-    # configKeyPath = "#{pkgName}.executionSettings.objectCodeFileType"
-    # if (objectCodeFileType = atom.config.get(configKeyPath))
-    #   @language.setObjectCodeFileType(objectCodeFileType)
-    # else
-    #   atom.config.set(configKeyPath,@language.getObjectCodeFileType())
-    # atom.config.onDidChange configKeyPath, ({newValue}) =>
-    #   @language.setObjectCodeFileType(newValue)
 
     configKeyPath = "#{pkgName}.executionSettings.executionCommandPatterns"
     if (executionCommandPatterns = atom.config.get(configKeyPath)).length > 0
