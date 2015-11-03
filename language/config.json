@@ -18,7 +18,6 @@
       "description": "Ruby without any restrictions!"
     }
   ],
-  "lastActiveLevel": "Level 4",
   "defaultGrammar": "grammars/default.cson",
   "levelCodeFileTypes": [
     "rb",
