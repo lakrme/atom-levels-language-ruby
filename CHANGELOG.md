@@ -12,3 +12,6 @@
 * Level 1 and Level 2 do not point to the same parser anymore
 * Level 4 now correctly forwards Ruby code to the interpreter without parsing it
 * The statement `$stdout.sync = true` is now implicitly added to every Ruby program to preserve the correct input/output order
+
+## 0.4.1 (2015-11-04)
+* Replaced the 64-bit executable for Windows with a 32-bit one for compatibility reasons
