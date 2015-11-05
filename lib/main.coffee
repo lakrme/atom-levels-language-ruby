@@ -1,54 +1,14 @@
-{Emitter,Disposable} = require('atom')
-path                 = require('path')
-CSON                 = require('season')
+{CompositeDisposable,Disposable} = require('atom')
+path                             = require('path')
+CSON                             = require('season')
 
 # ------------------------------------------------------------------------------
 
 module.exports =
 
-  ## Language package settings -------------------------------------------------
-
-  config:
-    generalSettings:
-      type: 'object'
-      order: 1
-      properties:
-        levelCodeFileTypes:
-          title: 'Level Code File Type(s)'
-          description:
-            'A comma-separated list of file type extensions that are associated
-            with this level language. This allows Levels to select the correct
-            language when a file is opened or saved and no other language
-            information is given. It\'s also possible to add a file type that is
-            already associated with another installed grammar (e.g. `rb` for a
-            Ruby-based level language).'
-          type: 'array'
-          default: []
-          items:
-            type: 'string'
-    executionSettings:
-      type: 'object'
-      order: 2
-      properties:
-        executionCommandPatterns:
-          title: 'Execution Command Pattern(s)'
-          description:
-            'A comma-separated list of patterns for the commands that will be
-            executed (sequentially) to run your programs. Use the `<filePath>`
-            variable to indicate where to insert the input file for each
-            command. To run a generated executable file, add `./<filePath>` to
-            the end of the list (e.g. `ghc -v0 <filePath>, ./<filePath>` for a
-            Haskell-based level language).'
-          type: 'array'
-          default: []
-          items:
-            type: 'string'
-
   ## Language package activation and deactivation ------------------------------
 
   activate: ->
-    @emitter = new Emitter
-
     @pkgDirPath = path.dirname(__dirname)
     pkgMetadataFilePath = CSON.resolve(path.join(@pkgDirPath,'package'))
     @pkgMetadata = CSON.readFileSync(pkgMetadataFilePath)
@@ -60,13 +20,13 @@ module.exports =
       if pkg.name is @pkgMetadata.name
         @dummyGrammar = pkg.grammars[0]
         atom.grammars.removeGrammar(@dummyGrammar)
-        @startUsingLevels() if @levelsIsActive
-        @onDidActivateLevels => @startUsingLevels()
-        @onDidDeactivateLevels => @stopUsingLevels()
+        @startUsingLevels() if @consumedLevels
         pkgSubscr.dispose()
+        @activated = true
 
   deactivate: ->
-    @languageRegistry.removeLanguage(@language) if @levelsIsActive
+    @levelsBinding?.dispose()
+    @activated = false
 
   ## Activation helpers --------------------------------------------------------
 
@@ -82,59 +42,79 @@ module.exports =
 
   ## Interacting with the Levels package ---------------------------------------
 
-  onDidActivateLevels: (callback) ->
-    @emitter.on('did-activate-levels',callback)
-
-  onDidDeactivateLevels: (callback) ->
-    @emitter.on('did-deactivate-levels',callback)
-
-  consumeLevels: ({@languageRegistry}) ->
-    @levelsIsActive = true
-    @emitter.emit('did-activate-levels')
-    new Disposable =>
-      @levelsIsActive = false
-      @emitter.emit('did-deactivate-levels')
+  consumeLevels: ({@languageRegistry,@notificationUtils}) ->
+    if @activated
+      @startUsingLevels()
+    @consumedLevels = true
+    @levelsBinding = new Disposable =>
+      @stopUsingLevels()
+      @consumedLevels = false
 
   startUsingLevels: ->
-    unless @language?
+    unless @usingLevels
       try
-        @language = @languageRegistry.readLanguageSync\
-          (@configFilePath,@executablePath)
-        @dummyGrammar.name = @language.getGrammarName()
-        @dummyGrammar.scopeName = @language.getScopeName()
-        @dummyGrammar.fileTypes = @language.getLevelCodeFileTypes()
-        @language.setDummyGrammar(@dummyGrammar)
-        @setUpLanguageConfigurationManagement()
+        unless @language?
+          @language = @languageRegistry.readLanguageSync\
+            (@configFilePath,@executablePath)
+          @dummyGrammar.name = @language.getGrammarName()
+          @dummyGrammar.scopeName = @language.getScopeName()
+          @dummyGrammar.fileTypes = @language.getLevelCodeFileTypes()
+          @language.setDummyGrammar(@dummyGrammar)
+        atom.grammars.addGrammar(@dummyGrammar)
+        @languageRegistry.addLanguage(@language)
+        @usingLevels = true
+        @onDidStartUsingLevels()
       catch error
-        console.log error
-    whitelistPath = path.join(@pkgDirPath,'language','whitelist')
-    process.env['LRB_WHITELIST_PATH'] = whitelistPath
-    atom.grammars.addGrammar(@dummyGrammar)
-    @languageRegistry.addLanguage(@language)
+        atom.notifications.addError \
+          "Failed to load the language from the #{@pkgMetadata.name} package",
+          detail: error.toString(),
+          dismissable: true
 
   stopUsingLevels: ->
-    atom.grammars.removeGrammar(@dummyGrammar)
+    if @usingLevels
+      atom.grammars.removeGrammar(@dummyGrammar)
+      @languageRegistry.removeLanguage(@language)
+      @usingLevels = false
+      @onDidStopUsingLevels()
+
+  onDidStartUsingLevels: ->
+    @setUpConfigManagement()
+    whitelistPath = path.join(@pkgDirPath,'language','whitelist')
+    process.env['LRB_WHITELIST_PATH'] = whitelistPath
+
+  onDidStopUsingLevels: ->
+    @configSubscrs.dispose()
     delete process.env['LRB_WHITELIST_PATH']
 
   ## Language configuration management -----------------------------------------
 
-  setUpLanguageConfigurationManagement: ->
-    pkgName = @pkgMetadata.name
+  config:
+    rubyInterpreterDirectoryPath:
+      title: 'Ruby Interpreter Directory Path'
+      description:
+        'The path to the directory that contains the Ruby interpreter (a file
+        named `ruby` on Mac OS X/Linux and `ruby.exe` on Windows, respectively).
+        If no path is given, the `PATH` environment variable will be checked
+        automatically.'
+      type: 'string'
+      default: ''
 
-    configKeyPath = "#{pkgName}.generalSettings.levelCodeFileTypes"
-    if (levelCodeFileTypes = atom.config.get(configKeyPath)).length > 0
-      @language.setLevelCodeFileTypes(levelCodeFileTypes)
-    else
-      atom.config.set(configKeyPath,@language.getLevelCodeFileTypes())
-    atom.config.onDidChange configKeyPath, ({newValue}) =>
-      @language.setLevelCodeFileTypes(newValue)
+  setUpConfigManagement: ->
+    @configSubscrs = new CompositeDisposable
 
-    configKeyPath = "#{pkgName}.executionSettings.executionCommandPatterns"
-    if (executionCommandPatterns = atom.config.get(configKeyPath)).length > 0
+    configKeyPath = "#{@pkgMetadata.name}.rubyInterpreterDirectoryPath"
+    if (rubyInterpreterDirectoryPath = atom.config.get(configKeyPath).trim())
+      rubyInterpreterPath = path.join(rubyInterpreterDirectoryPath,'ruby')
+      executionCommandPatterns = ["#{rubyInterpreterPath} <filePath>"]
       @language.setExecutionCommandPatterns(executionCommandPatterns)
     else
-      atom.config.set(configKeyPath,@language.getExecutionCommandPatterns())
-    atom.config.onDidChange configKeyPath, ({newValue}) =>
-      @language.setExecutionCommandPatterns(newValue)
+      @language.setExecutionCommandPatterns(["ruby <filePath>"])
+    @configSubscrs = atom.config.onDidChange configKeyPath, ({newValue}) =>
+      if (rubyInterpreterDirectoryPath = newValue.trim())
+        rubyInterpreterPath = path.join(rubyInterpreterDirectoryPath,'ruby')
+        executionCommandPatterns = ["#{rubyInterpreterPath} <filePath>"]
+        @language.setExecutionCommandPatterns(executionCommandPatterns)
+      else
+        @language.setExecutionCommandPatterns(["ruby <filePath>"])
 
 # ------------------------------------------------------------------------------
