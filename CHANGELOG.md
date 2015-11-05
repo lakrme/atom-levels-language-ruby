@@ -15,3 +15,9 @@
 
 ## 0.4.1 (2015-11-04)
 * Replaced the 64-bit executable for Windows with a 32-bit one for compatibility reasons
+
+## 0.5.0 (2015-11-05)
+* (Hopefully) fixed the compatibility problems with the darwin executable
+* Fixed a bug that caused the configuration settings to be unset when updating the package
+* The language settings have been simplified in that it's only possible to choose the path to the directory that contains the `ruby` command (the level code file type setting has been removed)
+* Increased stability and consistency of the interaction with the Levels package
