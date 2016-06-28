@@ -3,19 +3,31 @@
   "levels": [
     {
       "name": "Level 1",
-      "description": "Statements must be terminated with a semicolon."
+      "description": "Statements must be terminated with a semicolon.",
+      "options": {
+        "debuggable": true
+      }
     },
     {
       "name": "Level 2",
-      "description": "Semicolons are now optional."
+      "description": "Semicolons are now optional.",
+      "options": {
+        "debuggable": true
+      }
     },
     {
       "name": "Level 3",
-      "description": "Introduces blocks as a new language construct."
+      "description": "Introduces blocks as a new language construct.",
+      "options": {
+        "debuggable": true
+      }
     },
     {
       "name": "Level 4",
-      "description": "Ruby without any restrictions!"
+      "description": "Ruby without any restrictions!",
+      "options": {
+        "debuggable": false
+      }
     }
   ],
   "defaultGrammar": "grammars/default.cson",
@@ -28,5 +40,6 @@
   "lineCommentPattern": "# <comment>",
   "executionCommandPatterns": [
     "ruby <filePath>"
-  ]
+  ],
+  "lastActiveLevel": "Level 3"
 }
