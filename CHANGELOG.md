@@ -21,3 +21,8 @@
 * Fixed a bug that caused the configuration settings to be unset when updating the package
 * The language settings have been simplified in that it's only possible to choose the path to the directory that contains the `ruby` command (the level code file type setting has been removed)
 * Increased stability and consistency of the interaction with the Levels package
+
+## 0.5.2 (2016-06-29)
+* Executable now supports the -d flag for debugging purposes used with the levels-debugger-ruby package
+* config.json now includes an "options" object for each level
+* Sources have been restructured for a simpler build process
