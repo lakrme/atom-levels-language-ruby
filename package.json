@@ -22,5 +22,8 @@
   },
   "dependencies": {
     "season": "^5.2.0"
+  },
+  "devDependencies": {
+    "coffeelint": "^1.16.0"
   }
 }
