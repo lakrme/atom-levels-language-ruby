@@ -1,17 +1,30 @@
 {
   "name": "levels-language-ruby",
-  "main": "./lib/main",
   "version": "0.5.2",
-  "description": "Ruby with language levels for the lecture \"Informatik für Nebenfächler\" (University of Kiel, Department of Computer Science, WS 2015/2016).",
+  "description": "Ruby language support for the levels package",
   "keywords": [
+    "atom",
     "language",
     "levels",
-    "lps",
     "ruby"
   ],
-  "repository": "https://github.com/lakrme/atom-levels-language-ruby",
+  "main": "./lib/main",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lakrme/atom-levels-language-ruby.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lakrme/atom-levels-language-ruby/issues"
+  },
+  "license": "MIT",
   "engines": {
-    "atom": ">=1.0.0 <2.0.0"
+    "atom": ">=1.17.0 <2.0.0"
+  },
+  "dependencies": {
+    "season": "^6.0.0"
+  },
+  "devDependencies": {
+    "coffeelint": "^1.16.0"
   },
   "consumedServices": {
     "levels": {
@@ -19,11 +32,5 @@
         "^0.3.0": "consumeLevels"
       }
     }
-  },
-  "dependencies": {
-    "season": "^5.2.0"
-  },
-  "devDependencies": {
-    "coffeelint": "^1.16.0"
   }
 }
