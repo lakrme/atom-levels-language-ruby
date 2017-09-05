@@ -1,3 +1,3 @@
-# Ruby language package for Levels
+# Ruby language support for the levels package
 
-A language plug-in for [Levels](https://github.com/lakrme/atom-levels) that provides support for Ruby with language levels as it is used in the lecture "Informatik für Nebenfächler" (University of Kiel, Department of Computer Science, WS 2015/2016).
+Provides Ruby language support for the [`levels`](https://github.com/lakrme/atom-levels) package. The language levels are designed to support the beginners computer science course taught at [Kiel University](https://www.uni-kiel.de).
