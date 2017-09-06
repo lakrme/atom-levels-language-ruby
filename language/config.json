@@ -32,9 +32,9 @@
   ],
   "defaultGrammar": "grammars/default.cson",
   "levelCodeFileTypes": [
+    "lrb",
     "rb",
-    "rbl",
-    "lrb"
+    "rbl"
   ],
   "objectCodeFileType": "rb",
   "lineCommentPattern": "# <comment>",
