@@ -34,7 +34,7 @@ module.exports =
     CSON.resolve(path.join(@pkgDirPath,'language','config'))
 
   getExecutablePath: ->
-    executableDirPath = path.join(@pkgDirPath,'language','executable')
+    executableDirPath = path.join(@pkgDirPath,'language','executables')
     switch process.platform
       when 'darwin' then path.join(executableDirPath,'darwin','run')
       when 'linux'  then path.join(executableDirPath,'linux','run')
