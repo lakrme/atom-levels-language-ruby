@@ -27,10 +27,8 @@ module.exports =
 
   getExecutablePath: ->
     executableDirPath = path.join @pkgDirPath, 'language', 'executables'
-    switch process.platform
-      when 'darwin' then path.join executableDirPath, 'darwin', 'run'
-      when 'linux'  then path.join executableDirPath, 'linux', 'run'
-      when 'win32'  then path.join executableDirPath, 'win32', 'run.exe'
+    executable = if process.platform == 'win32' then 'run.exe' else 'run'
+    return path.join executableDirPath, process.platform, executable
 
   consumeLevels: ({@languageRegistry}) ->
     if @activated
