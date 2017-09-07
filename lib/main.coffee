@@ -4,9 +4,10 @@ CSON = require 'season'
 module.exports =
   activate: ->
     @pkgName = 'levels-language-ruby'
-    @pkgDirPath = atom.packages.resolvePackagePath @pkgName
+    pkgDirPath = atom.packages.resolvePackagePath @pkgName
+    @pkgLanguageDirPath = path.join pkgDirPath, 'language'
 
-    @configFilePath = CSON.resolve path.join @pkgDirPath, 'language', 'config'
+    @configFilePath = CSON.resolve path.join @pkgLanguageDirPath, 'config'
     @executablePath = @getExecutablePath()
 
     pkgSubscription = atom.packages.onDidActivatePackage (pkg) =>
@@ -26,7 +27,7 @@ module.exports =
     @activated = false
 
   getExecutablePath: ->
-    executableDirPath = path.join @pkgDirPath, 'language', 'executables'
+    executableDirPath = path.join @pkgLanguageDirPath, 'executables'
     executable = if process.platform == 'win32' then 'run.exe' else 'run'
     return path.join executableDirPath, process.platform, executable
 
@@ -64,8 +65,7 @@ module.exports =
 
   onDidStartUsingLevels: ->
     @setUpConfigManagement()
-    whitelistPath = path.join @pkgDirPath, 'language', 'whitelist'
-    process.env['LRB_WHITELIST_PATH'] = whitelistPath
+    process.env['LRB_WHITELIST_PATH'] = path.join @pkgLanguageDirPath, 'whitelist'
 
   onDidStopUsingLevels: ->
     @configSubscription.dispose()
