@@ -4,7 +4,7 @@
 
 ## 0.5.1 (2016-06-28)
 
-* The executables now supports the `-d` flag for debugging purposes used by the `levels-debugger-ruby` package
+* The executables now support the `-d` flag for debugging purposes used by the `levels-debugger-ruby` package
 * The `config.json` file now includes an `options` object for each level
 * Sources have been restructured for a simpler build process
 
