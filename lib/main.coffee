@@ -12,8 +12,8 @@ module.exports =
 
     pkgSubscription = atom.packages.onDidActivatePackage (pkg) =>
       if pkg.name == @pkgName
-        @dummyGrammar = pkg.grammars[0]
-        atom.grammars.removeGrammar @dummyGrammar
+        dummyGrammarPath = path.join @pkgLanguageDirPath, 'grammars', 'dummy.cson'
+        @dummyGrammar = atom.grammars.readGrammarSync dummyGrammarPath
 
         if @consumedLevels
           @startUsingLevels()
