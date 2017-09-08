@@ -10,11 +10,11 @@ module.exports =
     @configFilePath = CSON.resolve path.join @pkgLanguageDirPath, 'config'
     @executablePath = @getExecutablePath()
 
+    dummyGrammarPath = CSON.resolve path.join @pkgLanguageDirPath, 'grammars', 'dummy'
+    @dummyGrammar = atom.grammars.readGrammarSync dummyGrammarPath
+
     pkgSubscription = atom.packages.onDidActivatePackage (pkg) =>
       if pkg.name == @pkgName
-        dummyGrammarPath = CSON.resolve path.join @pkgLanguageDirPath, 'grammars', 'dummy'
-        @dummyGrammar = atom.grammars.readGrammarSync dummyGrammarPath
-
         if @consumedLevels
           @startUsingLevels()
 
