@@ -12,7 +12,7 @@ module.exports =
 
     pkgSubscription = atom.packages.onDidActivatePackage (pkg) =>
       if pkg.name == @pkgName
-        dummyGrammarPath = path.join @pkgLanguageDirPath, 'grammars', 'dummy.cson'
+        dummyGrammarPath = CSON.resolve path.join @pkgLanguageDirPath, 'grammars', 'dummy'
         @dummyGrammar = atom.grammars.readGrammarSync dummyGrammarPath
 
         if @consumedLevels
@@ -27,9 +27,8 @@ module.exports =
     @activated = false
 
   getExecutablePath: ->
-    executableDirPath = path.join @pkgLanguageDirPath, 'executables'
     executable = if process.platform == 'win32' then 'run.exe' else 'run'
-    return path.join executableDirPath, process.platform, executable
+    return path.join @pkgLanguageDirPath, 'executables', process.platform, executable
 
   consumeLevels: ({@languageRegistry}) ->
     if @activated
