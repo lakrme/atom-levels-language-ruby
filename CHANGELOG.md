@@ -1,3 +1,7 @@
+## 0.5.3 (2017-09-09)
+
+* Updated the grammar file to use Atoms internal Ruby grammar
+
 ## 0.5.2 (2016-06-29)
 
 * Updated the changelog to reflect the changes of the last release
