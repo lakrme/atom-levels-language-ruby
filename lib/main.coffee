@@ -8,7 +8,8 @@ module.exports =
     @pkgLanguageDirPath = path.join pkgDirPath, 'language'
 
     @configFilePath = CSON.resolve path.join @pkgLanguageDirPath, 'config'
-    @executablePath = @getExecutablePath()
+    executable = if process.platform == 'win32' then 'run.exe' else 'run'
+    @executablePath = path.join @pkgLanguageDirPath, 'executables', process.platform, executable
 
     dummyGrammarPath = CSON.resolve path.join @pkgLanguageDirPath, 'grammars', 'dummy'
     @dummyGrammar = atom.grammars.readGrammarSync dummyGrammarPath
@@ -21,19 +22,19 @@ module.exports =
         pkgSubscription.dispose()
         @activated = true
 
+    return
+
   deactivate: ->
     @stopUsingLevels()
     @consumedLevels = false
     @activated = false
-
-  getExecutablePath: ->
-    executable = if process.platform == 'win32' then 'run.exe' else 'run'
-    return path.join @pkgLanguageDirPath, 'executables', process.platform, executable
+    return
 
   consumeLevels: ({@languageRegistry}) ->
     if @activated
       @startUsingLevels()
     @consumedLevels = true
+    return
 
   startUsingLevels: ->
     if !@usingLevels
@@ -54,6 +55,7 @@ module.exports =
         atom.notifications.addError "Failed to load the language from the #{@pkgName} package",
           detail: "#{error}"
           dismissable: true
+    return
 
   stopUsingLevels: ->
     if @usingLevels
@@ -61,14 +63,17 @@ module.exports =
       @languageRegistry.removeLanguage @language
       @usingLevels = false
       @onDidStopUsingLevels()
+    return
 
   onDidStartUsingLevels: ->
     @setUpConfigManagement()
     process.env['LRB_WHITELIST_PATH'] = path.join @pkgLanguageDirPath, 'whitelist'
+    return
 
   onDidStopUsingLevels: ->
     @configSubscription.dispose()
     delete process.env['LRB_WHITELIST_PATH']
+    return
 
   config:
     rubyInterpreterDirectoryPath:
@@ -79,18 +84,17 @@ module.exports =
       type: 'string'
       default: ''
 
-  setUpConfigManagement: ->
-    configKeyPath = "#{@pkgName}.rubyInterpreterDirectoryPath"
-
-    if rubyInterpreterDirectoryPath = atom.config.get(configKeyPath).trim()
+  setExecutionCommandPatterns: (directory) ->
+    if rubyInterpreterDirectoryPath = directory.trim()
       rubyInterpreterPath = path.join rubyInterpreterDirectoryPath, 'ruby'
       @language.setExecutionCommandPatterns ["#{rubyInterpreterPath} <filePath>"]
     else
       @language.setExecutionCommandPatterns ['ruby <filePath>']
+    return
 
+  setUpConfigManagement: ->
+    configKeyPath = "#{@pkgName}.rubyInterpreterDirectoryPath"
+    @setExecutionCommandPatterns atom.config.get configKeyPath
     @configSubscription = atom.config.onDidChange configKeyPath, ({newValue}) =>
-      if rubyInterpreterDirectoryPath = newValue.trim()
-        rubyInterpreterPath = path.join rubyInterpreterDirectoryPath, 'ruby'
-        @language.setExecutionCommandPatterns ["#{rubyInterpreterPath} <filePath>"]
-      else
-        @language.setExecutionCommandPatterns ['ruby <filePath>']
+      @setExecutionCommandPatterns newValue
+    return
