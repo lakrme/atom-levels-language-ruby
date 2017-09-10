@@ -50,7 +50,8 @@ module.exports =
         @languageRegistry.addLanguage @language
 
         @usingLevels = true
-        @onDidStartUsingLevels()
+        @setUpConfigManagement()
+        process.env['LRB_WHITELIST_PATH'] = path.join @pkgLanguageDirPath, 'whitelist'
       catch error
         atom.notifications.addError "Failed to load the language from the #{@pkgName} package",
           detail: "#{error}"
@@ -62,17 +63,8 @@ module.exports =
       atom.grammars.removeGrammar @dummyGrammar
       @languageRegistry.removeLanguage @language
       @usingLevels = false
-      @onDidStopUsingLevels()
-    return
-
-  onDidStartUsingLevels: ->
-    @setUpConfigManagement()
-    process.env['LRB_WHITELIST_PATH'] = path.join @pkgLanguageDirPath, 'whitelist'
-    return
-
-  onDidStopUsingLevels: ->
-    @configSubscription.dispose()
-    delete process.env['LRB_WHITELIST_PATH']
+      @configSubscription.dispose()
+      delete process.env['LRB_WHITELIST_PATH']
     return
 
   config:
