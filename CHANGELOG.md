@@ -1,3 +1,7 @@
+## 0.5.4 (2017-09-12)
+
+* Bug fixes and performance improvements
+
 ## 0.5.3 (2017-09-09)
 
 * Updated the grammar file to use Atoms internal Ruby grammar
