@@ -7,13 +7,6 @@ module.exports =
     pkgDirPath = atom.packages.resolvePackagePath @pkgName
     @pkgLanguageDirPath = path.join pkgDirPath, 'language'
 
-    @configFilePath = CSON.resolve path.join @pkgLanguageDirPath, 'config'
-    executable = if process.platform == 'win32' then 'run.exe' else 'run'
-    @executablePath = path.join @pkgLanguageDirPath, 'executables', process.platform, executable
-
-    dummyGrammarPath = CSON.resolve path.join @pkgLanguageDirPath, 'grammars', 'dummy'
-    @dummyGrammar = atom.grammars.readGrammarSync dummyGrammarPath
-
     pkgSubscription = atom.packages.onDidActivatePackage (pkg) =>
       if pkg.name == @pkgName
         if @consumedLevels
@@ -40,7 +33,12 @@ module.exports =
     if !@usingLevels
       try
         if !@language
-          @language = @languageRegistry.readLanguageSync @configFilePath, @executablePath
+          configFilePath = CSON.resolve path.join @pkgLanguageDirPath, 'config'
+          executable = if process.platform == 'win32' then 'run.exe' else 'run'
+          executablePath = path.join @pkgLanguageDirPath, 'executables', process.platform, executable
+          dummyGrammarPath = CSON.resolve path.join @pkgLanguageDirPath, 'grammars', 'dummy'
+          @dummyGrammar = atom.grammars.readGrammarSync dummyGrammarPath
+          @language = @languageRegistry.readLanguageSync configFilePath, executablePath
           @dummyGrammar.name = @language.getGrammarName()
           @dummyGrammar.scopeName = @language.getScopeName()
           @dummyGrammar.fileTypes = @language.getLevelCodeFileTypes()
@@ -77,11 +75,8 @@ module.exports =
       default: ''
 
   setExecutionCommandPatterns: (directory) ->
-    if rubyInterpreterDirectoryPath = directory.trim()
-      rubyInterpreterPath = path.join rubyInterpreterDirectoryPath, 'ruby'
-      @language.setExecutionCommandPatterns ["#{rubyInterpreterPath} <filePath>"]
-    else
-      @language.setExecutionCommandPatterns ['ruby <filePath>']
+    rubyInterpreterPath = path.join directory.trim(), 'ruby'
+    @language.setExecutionCommandPatterns ["#{rubyInterpreterPath} <filePath>"]
     return
 
   setUpConfigManagement: ->
