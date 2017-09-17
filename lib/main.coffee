@@ -51,8 +51,9 @@ module.exports =
         @setUpConfigManagement()
         process.env['LRB_WHITELIST_PATH'] = path.join @pkgLanguageDirPath, 'whitelist'
       catch error
-        atom.notifications.addError "Failed to load the language from the #{@pkgName} package",
-          detail: "#{error}"
+        atom.notifications.addFatalError "Failed to load the language from the #{@pkgName} package",
+          detail: error.message
+          stack: error.stack
           dismissable: true
     return
 
