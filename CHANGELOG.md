@@ -1,3 +1,7 @@
+## 0.5.5 (2017-09-30)
+
+* Added the stack trace to error notifications
+
 ## 0.5.4 (2017-09-12)
 
 * Bug fixes and performance improvements
