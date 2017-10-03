@@ -1,3 +1,8 @@
+## 0.5.7 (2017-10-03)
+
+* Converted the grammar files from CSON to JSON
+* Removed the `season` dependency
+
 ## 0.5.6 (2017-10-03)
 
 * Converted the main module from CoffeeScript to JavaScript
