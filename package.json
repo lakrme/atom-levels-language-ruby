@@ -20,9 +20,6 @@
   "engines": {
     "atom": ">=1.17.0 <2.0.0"
   },
-  "dependencies": {
-    "season": "^6.0.0"
-  },
   "devDependencies": {
     "eslint": "^4.7.0"
   },
