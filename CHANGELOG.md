@@ -1,3 +1,7 @@
+## 0.5.6 (2017-10-03)
+
+* Converted the main module from CoffeeScript to JavaScript
+
 ## 0.5.5 (2017-09-30)
 
 * Added the stack trace to error notifications
