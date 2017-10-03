@@ -24,7 +24,7 @@
     "season": "^6.0.0"
   },
   "devDependencies": {
-    "coffeelint": "^1.16.0"
+    "eslint": "^4.7.0"
   },
   "consumedServices": {
     "levels": {
