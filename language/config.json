@@ -30,7 +30,7 @@
       }
     }
   ],
-  "defaultGrammar": "grammars/default.cson",
+  "defaultGrammar": "grammars/default.json",
   "levelCodeFileTypes": [
     "lrb",
     "rb",

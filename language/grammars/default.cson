@@ -1,6 +1,0 @@
-'scopeName': 'levels.source.ruby'
-'patterns': [
-  {
-    'include': 'source.ruby'
-  }
-]
