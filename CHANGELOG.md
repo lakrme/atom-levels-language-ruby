@@ -1,3 +1,7 @@
+## 0.5.8 (2017-11-29)
+
+* Removed the undocumented Atom function `::removeGrammar`
+
 ## 0.5.7 (2017-10-03)
 
 * Converted the grammar files from CSON to JSON
