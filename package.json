@@ -2,6 +2,7 @@
   "name": "levels-language-ruby",
   "version": "0.5.8",
   "description": "Ruby language support for the levels package",
+  "author": "Lasse Kristopher Meyer",
   "keywords": [
     "atom",
     "language",
@@ -9,6 +10,7 @@
     "ruby"
   ],
   "main": "./lib/main",
+  "homepage": "https://github.com/lakrme/atom-levels-language-ruby",
   "repository": {
     "type": "git",
     "url": "https://github.com/lakrme/atom-levels-language-ruby.git"
