@@ -1,3 +1,7 @@
+## 0.5.9 (2020-07-19)
+
+* There are no user-facing changes in this release
+
 ## 0.5.8 (2017-11-29)
 
 * Removed the undocumented Atom function `::removeGrammar`
