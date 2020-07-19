@@ -1,6 +1,6 @@
 {
   "name": "levels-language-ruby",
-  "version": "0.5.8",
+  "version": "0.5.9",
   "description": "Ruby language support for the levels package",
   "author": "Lasse Kristopher Meyer",
   "keywords": [
